@@ -1,27 +1,30 @@
 import { Button } from '@chakra-ui/button'
-import React, { useState } from 'react'
+import React, { useReducer } from 'react'
+import { counterReducer, init, initialState } from '../reducers/counterReducer'
+import { types } from '../types/types'
 
 const Counter = () => {
 
-    const [counter, setCounter] = useState({
-        counter1: 10,
-        counter2: 20,
-        counter3: 30,
-        counter4: 40,
-    })
-
-    const { counter1 } = counter
+    const [counter, dispatch] = useReducer(counterReducer, initialState, init)
 
     return (
         <div>
-            <h1>Counter: {counter1}</h1>
+            <h1>Counter: {counter}</h1>
             <hr />
-            <Button colorScheme="green"
-                onClick={() => setCounter({
-                    ...counter,
-                    counter1: counter1 + 1
-                })}>
-                +1
+            <Button colorScheme="green" onClick={() => {
+                dispatch({ type: types.increment })
+            }}>
+                Incremento
+            </Button>
+            <Button colorScheme="green" onClick={() => {
+                dispatch({ type: types.decrement })
+            }}>
+                Decremento
+            </Button>
+            <Button colorScheme="green" onClick={() => {
+                dispatch({ type: types.reset })
+            }}>
+                Reset
             </Button>
         </div>
     )

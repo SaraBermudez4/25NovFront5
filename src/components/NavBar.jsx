@@ -1,11 +1,25 @@
 import { Button } from '@chakra-ui/button'
 import { Image } from '@chakra-ui/image'
 import { Box, Flex, Text } from '@chakra-ui/layout'
-import React from 'react'
+import React, { useContext } from 'react'
 import { NavLink } from 'react-router-dom'
 import { Link } from '@chakra-ui/layout'
+import { authReducer } from '../reducers/authReducer'
+import { AuthContext } from './authContext'
+import { logout } from '../actions/authAction'
+import { useNavigate } from 'react-router'
 
 const NavBar = () => {
+
+    const { dispatch } = useContext(AuthContext)
+    const navigate = useNavigate()
+
+    const handleLogout = () => {
+        dispatch(logout())
+        navigate('/login', {
+            replace: true
+        })
+    }
 
     return (
         <Flex
@@ -47,7 +61,7 @@ const NavBar = () => {
                     fontSize="20px"
                     style={({ isActive }) => isActive ? { color: "white" } : { color: "lightgrey" }}>
                     Profile</Link>
-                <Button variant="outline" type="submit" fontSize="20px" marginLeft="20px" >Logout</Button>
+                <Button variant="outline" type="submit" fontSize="20px" marginLeft="20px" onClick={handleLogout}>Logout</Button>
             </Box>
         </Flex >
     )
