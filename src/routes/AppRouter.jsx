@@ -7,6 +7,9 @@ import Login from '../components/Login'
 import NavBar from '../components/NavBar'
 import Profile from '../components/Profile'
 import { authReducer } from '../reducers/authReducer'
+import PrivateRouter from './PrivateRouter'
+import PublicRouter from './PublicRouter'
+import RoutesApp from './RoutesApp'
 
 const init = () => {
     return JSON.parse(localStorage.getItem('user')) || { logged: false }
@@ -25,14 +28,16 @@ const AppRouter = () => {
     return (
         <AuthContext.Provider value={{ user, dispatch }}>
             <BrowserRouter>
-                <NavBar />
                 <Routes>
-                    <Route path='/' element={<Home />} />
-                    <Route path='home' element={<Home />} />
-                    <Route path='counter' element={<Counter />} />
-                    <Route path='profile' element={<Profile />} />
-                    <Route path='login' element={<Login />} />
-                    <Route path='*' element={<Navigate to="/home" />} />
+                    <Route path='*' element={
+                        <PrivateRouter>
+                            <RoutesApp />
+                        </PrivateRouter>
+                    } />
+                    <Route path='login' element={
+                        <PublicRouter>
+                            <Login />
+                        </PublicRouter>} />
                 </Routes>
             </BrowserRouter>
         </AuthContext.Provider>
